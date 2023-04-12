@@ -6,5 +6,6 @@ steps:
   - name: ubuntu
     args:
       - echo
-      - $COMMIT_SHA
+      # You can pass values for variables from Terraform to the yaml config like so:
+      - ${test} 
 timeout: 600s

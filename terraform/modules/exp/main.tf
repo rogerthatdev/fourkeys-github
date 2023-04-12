@@ -1,7 +1,7 @@
 locals {
   repository_name   = split("/", replace(var.github_repository_url, "/(.*github.com/)/", ""))[1]
   repository_owner  = split("/", replace(var.github_repository_url, "/(.*github.com/)/", ""))[0]
-  test_build_config = yamldecode(templatefile("${path.module}/cloudbuild/test.cloudbuild.yaml", {}))
+  test_build_config = yamldecode(templatefile("${path.module}/cloudbuild/test.cloudbuild.yaml", {"test" = "a test variable via tf temlatefile()"}))
   pr_build_config   = yamldecode(templatefile("${path.module}/cloudbuild/pr.cloudbuild.yaml", {}))
 }
 
