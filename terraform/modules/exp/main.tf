@@ -1,12 +1,11 @@
 locals {
-  repository_name  = split("/", replace(var.github_repository_url, "/(.*github.com/)/", ""))[1]
-  repository_owner = split("/", replace(var.github_repository_url, "/(.*github.com/)/", ""))[0]
-  template_vars    = { test = "value" }
-  steps            = yamldecode(templatefile("${path.module}/build/test.cloudbuild.yaml", local.template_vars))
+  repository_name   = split("/", replace(var.github_repository_url, "/(.*github.com/)/", ""))[1]
+  repository_owner  = split("/", replace(var.github_repository_url, "/(.*github.com/)/", ""))[0]
+  test_build_config = yamldecode(templatefile("${path.module}/build/test.cloudbuild.yaml", {}))
 }
 
 output "test" {
-  value = local.steps
+  value = local.test_build_config
 }
 resource "google_cloudbuild_trigger" "test_project_capture" {
   project     = var.project_id
@@ -28,7 +27,7 @@ resource "google_cloudbuild_trigger" "test_project_capture" {
     substitutions = {}
     tags          = []
     dynamic "step" {
-      for_each = local.steps.steps
+      for_each = local.test_build_config.steps
       content {
         args = step.value.args
         name = step.value.name
