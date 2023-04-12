@@ -1,0 +1,16 @@
+# This config will run on every pull request.
+# A PR submission is the start of a lead time calculation
+steps:
+  - name: ubuntu
+    args:
+      - echo
+      - get commit sha $COMMIT_SHA
+  - name: ubuntu
+    args:
+      - echo
+      - use commit sha with github api to get more data
+  - name: ubuntu
+    args:
+      - echo
+      - throw that data into a db
+timeout: 600s
